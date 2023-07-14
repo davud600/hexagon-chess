@@ -1,0 +1,41 @@
+.downSidePawn
+{
+    position:absolute;
+    z-index: 5;
+    top:-18rem;
+    right:0rem;
+}
+.upSidePawn
+{
+    position:absolute;
+    z-index: 5;
+    bottom:0rem;
+    left:-8rem;
+}
+.layoutWrapper
+{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap:10rem;
+}
+.button
+{
+    background-color: black;
+    height:80px;
+    width:180px;
+    color:white;
+    font-weight: bolder;
+    font-size:1.4em;
+    border-color:white;
+}
+.button:hover {
+    background-color: black;
+    color:white;
+    border:none;
+}
+.dialog
+{
+    width:20rem;
+    height:20rem;
+}
