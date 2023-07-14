@@ -19,3 +19,9 @@ export const Board: number[] = [];
 
 Board.length = 91;
 Board.fill(0);
+
+Board[0] = Pieces.king | Pieces.white;
+Board[1] = Pieces.rook | Pieces.white;
+Board[10] = Pieces.knight | Pieces.white;
+Board[56] = Pieces.pawn | Pieces.black;
+Board[77] = Pieces.queen | Pieces.black;
