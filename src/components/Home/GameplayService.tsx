@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogTitle from '@mui/material/DialogTitle';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
-import style from "./Home.module.scss"
-import Link from 'next/link';
+import { useState } from "react";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import style from "./Home.module.scss";
+import Link from "next/link";
 
 const GameplayService = () => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -19,18 +19,22 @@ const GameplayService = () => {
   const handleLocal = () => {
     setOpen(false);
   };
-  
+
   const handleOnline = () => {
     setOpen(false);
   };
 
   const handleClose = () => {
     setOpen(false);
-  }
+  };
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen} className={style.button}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        className={style.button}
+      >
         play
       </Button>
       <Dialog
@@ -39,9 +43,7 @@ const GameplayService = () => {
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title">
-          {"Gameplay"}
-        </DialogTitle>
+        <DialogTitle id="responsive-dialog-title">{"Gameplay"}</DialogTitle>
         <DialogActions>
           <Link href="/game" autoFocus onClick={handleLocal}>
             Local
@@ -53,6 +55,6 @@ const GameplayService = () => {
       </Dialog>
     </div>
   );
-}
+};
 
 export default GameplayService;

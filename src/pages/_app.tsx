@@ -4,10 +4,10 @@ import "~/styles/globals.css";
 import Header from "~/components/Header/Header";
 
 const MyApp: AppType = ({ Component, pageProps }) => {
-  return(
+  return (
     <>
-    <Header currentUser="Rinor"></Header>
-    <Component {...pageProps} />
+      <Header currentUser="Rinor"></Header>
+      <Component {...pageProps} />
     </>
   );
 };

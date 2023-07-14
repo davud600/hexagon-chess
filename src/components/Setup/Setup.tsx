@@ -1,16 +1,12 @@
-
-
-interface SetupProps
-{
-    currentUser: string
+interface SetupProps {
+  currentUser: string;
 }
-const Setup = ({currentUser}: SetupProps) =>
-{
-    return(
-        <>
-        <span>{currentUser}</span>
-        </>
-    )
-}
+const Setup = ({ currentUser }: SetupProps) => {
+  return (
+    <>
+      <span>{currentUser}</span>
+    </>
+  );
+};
 
 export default Setup;

@@ -8,7 +8,7 @@ export default function Main() {
         <meta name="description" content="Chess but hexagons" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Index></Index>
+      <Index />
     </>
   );
 }
