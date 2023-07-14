@@ -1,9 +1,11 @@
-import RenderHome from "~/components/Layout/RenderHomeLayout";
+import HomeLayout from "~/components/Layouts/HomeLayout";
 
-export default function Index() {
+const HomePage = () => {
   return (
     <>
-      <RenderHome />
+      <HomeLayout />
     </>
   );
-}
+};
+
+export default HomePage;

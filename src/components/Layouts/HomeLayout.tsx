@@ -1,7 +1,7 @@
 import Home from "../Home/Home";
-import styles from "./RenderHomeLayout.module.scss";
+import styles from "./HomeLayout.module.scss";
 
-const RenderHome = () => {
+const HomeLayout = () => {
   return (
     <div className={styles.layoutWrapper}>
       <Home />
@@ -9,4 +9,4 @@ const RenderHome = () => {
   );
 };
 
-export default RenderHome;
+export default HomeLayout;

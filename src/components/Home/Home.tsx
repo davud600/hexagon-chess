@@ -1,7 +1,7 @@
 import Image from "next/image";
 import "../../../public/homeLogo.svg";
 import style from "./Home.module.scss";
-import GameplayService from "./GameplayService";
+import GameOptions from "./GameOptions";
 export default function Home() {
   return (
     <div className={style.layoutWrapper}>
@@ -25,7 +25,7 @@ export default function Home() {
         height={600}
         className={style.upSidePawn}
       />
-      <GameplayService />
+      <GameOptions />
     </div>
   );
 }

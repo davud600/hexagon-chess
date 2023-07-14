@@ -8,7 +8,7 @@ import { useTheme } from "@mui/material/styles";
 import style from "./Home.module.scss";
 import Link from "next/link";
 
-const GameplayService = () => {
+const GameOptions = () => {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -57,4 +57,4 @@ const GameplayService = () => {
   );
 };
 
-export default GameplayService;
+export default GameOptions;
