@@ -1,6 +1,7 @@
 // To hold all the global objects for pieces and board logic
 
 import { type PiecesType } from "./types/board";
+import { getBoardFromFEN } from "./utils/board";
 
 export const Pieces: PiecesType = {
   none: 0,
@@ -15,13 +16,11 @@ export const Pieces: PiecesType = {
   black: 16,
 };
 
-export const Board: number[] = [];
+export let Board: number[] = [];
 
 Board.length = 91;
 Board.fill(0);
 
-Board[0] = Pieces.king | Pieces.white;
-Board[1] = Pieces.rook | Pieces.white;
-Board[10] = Pieces.knight | Pieces.white;
-Board[56] = Pieces.pawn | Pieces.black;
-Board[77] = Pieces.queen | Pieces.black;
+Board = getBoardFromFEN(
+  "bknrp1/qb2p2/n1b1p3/r3p4/ppppp5/11/5PPPPP/4P3R/3P1B1N/2P2BK/1PRNQB"
+);
