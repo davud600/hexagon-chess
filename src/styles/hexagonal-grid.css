@@ -1,17 +1,17 @@
 .hexagon.hex.light,
 .hexagon.hex.light::before,
 .hexagon.hex.light::after {
-  background-color: #cccccc !important;
+  background-color: #b4d3b1 !important;
 }
 .hexagon.hex.neutral,
 .hexagon.hex.neutral::before,
 .hexagon.hex.neutral::after {
-  background-color: #8c8c8c !important;
+  background-color: #6ca369 !important;
 }
 .hexagon.hex.dark,
 .hexagon.hex.dark::before,
 .hexagon.hex.dark::after {
-  background-color: #575757 !important;
+  background-color: #448541 !important;
 }
 
 .manehex .hexagon {

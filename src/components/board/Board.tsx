@@ -2,6 +2,7 @@ import Image from "next/image";
 import { type ModuleColor } from "~/types/board";
 import BoardProvider, { useBoard } from "~/context/BoardContext";
 import { type DragEvent } from "react";
+import { movesIncludeMove } from "~/utils/board";
 
 function BoardPieceComponent({ index }: { index: number }) {
   const { BoardState, SelectedPieceState } = useBoard();
@@ -43,15 +44,15 @@ function BoardPieceComponent({ index }: { index: number }) {
         alt="No White King"
         width={50}
         height={50}
-        priority
         placeholder="empty"
+        priority
       />
     </div>
   );
 }
 
 function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
-  const { BoardState, SelectedPieceState } = useBoard();
+  const { MovesState, SelectedPieceState, makeMove } = useBoard();
 
   const className = `hexagon hex ${color}`;
 
@@ -68,15 +69,17 @@ function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
     )
       return;
 
-    BoardState.setBoard((prevBoard) => {
-      const updatedBoard = prevBoard;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      updatedBoard[SelectedPieceState.selectedPiece!.posIndex] = 0;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      updatedBoard[index] = SelectedPieceState.selectedPiece!.pieceValue;
+    if (
+      !movesIncludeMove(MovesState.moves, {
+        startPosIndex: SelectedPieceState.selectedPiece.posIndex,
+        targetPosIndex: index,
+      })
+    ) {
       SelectedPieceState.setSelectedPiece(null);
-      return updatedBoard;
-    });
+      return;
+    }
+
+    makeMove(index);
   };
 
   const handleOnClick = () => {
@@ -86,16 +89,24 @@ function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
     )
       return;
 
-    BoardState.setBoard((prevBoard) => {
-      const updatedBoard = prevBoard;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      updatedBoard[SelectedPieceState.selectedPiece!.posIndex] = 0;
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      updatedBoard[index] = SelectedPieceState.selectedPiece!.pieceValue;
+    if (
+      !movesIncludeMove(MovesState.moves, {
+        startPosIndex: SelectedPieceState.selectedPiece.posIndex,
+        targetPosIndex: index,
+      })
+    ) {
       SelectedPieceState.setSelectedPiece(null);
-      return updatedBoard;
-    });
+      return;
+    }
+
+    makeMove(index);
   };
+
+  let textColor = "";
+
+  MovesState.moves.forEach((move) => {
+    if (move.targetPosIndex === index) textColor = "text-red-500";
+  });
 
   return (
     <div
@@ -104,6 +115,11 @@ function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
       onDrop={(e) => handleOnDrop(e)}
       onClick={handleOnClick}
     >
+      <span
+        className={`absolute bottom-0 right-0 z-10 -rotate-[30deg] ${textColor}`}
+      >
+        {index}
+      </span>
       <BoardPieceComponent index={index} />
     </div>
   );

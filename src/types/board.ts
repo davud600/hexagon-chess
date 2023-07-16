@@ -22,4 +22,9 @@ export type SelectedPieceType = {
   posIndex: number;
 };
 
+export type Move = {
+  startPosIndex: number;
+  targetPosIndex: number;
+};
+
 export type BoardType = number[];
