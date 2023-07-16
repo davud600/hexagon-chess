@@ -22,5 +22,5 @@ Board.length = 91;
 Board.fill(0);
 
 Board = getBoardFromFEN(
-  "bknrp1/qb2p2/n1b1p3/r3p4/ppppp5/11/5PPPP/4P3R/3P1B1N/2P2BK/1PRNQB"
+  "bknrp1/qb2p2/n1b1p3/r3p4/ppppp5/11/5PPPPP/4P3R/3P1B1N/2P2BK/1PRNQB"
 );

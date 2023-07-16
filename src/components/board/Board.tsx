@@ -19,6 +19,14 @@ function BoardPieceComponent({ index }: { index: number }) {
   const imgSrc = `pieces-basic-svg/${bin}.svg`;
 
   const handleOnDragStart = () => {
+    if (!!SelectedPieceState.selectedPiece) return;
+
+    SelectedPieceState.setSelectedPiece({ pieceValue, posIndex: index });
+  };
+
+  const handleOnClick = () => {
+    if (!!SelectedPieceState.selectedPiece) return;
+
     SelectedPieceState.setSelectedPiece({ pieceValue, posIndex: index });
   };
 
@@ -26,6 +34,7 @@ function BoardPieceComponent({ index }: { index: number }) {
     <div
       draggable={true}
       onDragStart={handleOnDragStart}
+      onClick={handleOnClick}
       className="absolute flex h-full w-full items-center justify-center"
     >
       <Image
@@ -70,11 +79,30 @@ function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
     });
   };
 
+  const handleOnClick = () => {
+    if (
+      SelectedPieceState.selectedPiece === null ||
+      SelectedPieceState.selectedPiece === undefined
+    )
+      return;
+
+    BoardState.setBoard((prevBoard) => {
+      const updatedBoard = prevBoard;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      updatedBoard[SelectedPieceState.selectedPiece!.posIndex] = 0;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      updatedBoard[index] = SelectedPieceState.selectedPiece!.pieceValue;
+      SelectedPieceState.setSelectedPiece(null);
+      return updatedBoard;
+    });
+  };
+
   return (
     <div
       className={className}
       onDragOver={(e) => handleOnDragOver(e)}
       onDrop={(e) => handleOnDrop(e)}
+      onClick={handleOnClick}
     >
       <BoardPieceComponent index={index} />
     </div>
