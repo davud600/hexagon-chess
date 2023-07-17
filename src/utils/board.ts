@@ -169,18 +169,19 @@ export function getMovesFromBoard(
 
           if (
             Board[targetPosIndex + 1] !== 0 &&
-            getPieceColor(Board[targetPosIndex + 1] as unknown as number) !==
-              getPieceColor(piece)
+            getPieceColor(
+              Board[targetPosIndex + 1] as unknown as PieceColor
+            ) !== getPieceColor(piece)
           ) {
             moves.push({ startPosIndex, targetPosIndex: targetPosIndex + 1 });
           }
 
           if (
             Board[startPosIndex - 1] !== 0 &&
-            getPieceColor(Board[targetPosIndex - 1] as unknown as number) !==
+            getPieceColor(Board[startPosIndex - 1] as unknown as PieceColor) !==
               getPieceColor(piece)
           ) {
-            moves.push({ startPosIndex, targetPosIndex: targetPosIndex - 1 });
+            moves.push({ startPosIndex, targetPosIndex: startPosIndex - 1 });
           }
         }
       } else if (getPieceColor(piece) === Pieces.black) {
@@ -196,19 +197,20 @@ export function getMovesFromBoard(
           }
 
           if (
-            Board[targetPosIndex + 1] !== 0 &&
-            getPieceColor(Board[targetPosIndex + 1] as unknown as number) !==
-              getPieceColor(piece)
+            Board[targetPosIndex - 1] !== 0 &&
+            getPieceColor(
+              Board[targetPosIndex - 1] as unknown as PieceColor
+            ) !== getPieceColor(piece)
           ) {
-            moves.push({ startPosIndex, targetPosIndex: targetPosIndex + 1 });
+            moves.push({ startPosIndex, targetPosIndex: targetPosIndex - 1 });
           }
 
           if (
-            Board[startPosIndex - 1] !== 0 &&
-            getPieceColor(Board[targetPosIndex - 1] as unknown as number) !==
+            Board[startPosIndex + 1] !== 0 &&
+            getPieceColor(Board[startPosIndex + 1] as unknown as PieceColor) !==
               getPieceColor(piece)
           ) {
-            moves.push({ startPosIndex, targetPosIndex: targetPosIndex - 1 });
+            moves.push({ startPosIndex, targetPosIndex: startPosIndex + 1 });
           }
         }
       }
