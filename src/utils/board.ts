@@ -151,6 +151,67 @@ export function getMovesFromBoard(
 
         moves.push({ startPosIndex, targetPosIndex: targetPosIndexN });
       }
+    } else if (getPieceType(piece) === Pieces.pawn) {
+      const rightRow = getRightRowFromIndex(startPosIndex);
+
+      let targetPosIndex = startPosIndex;
+
+      if (getPieceColor(piece) === Pieces.white) {
+        targetPosIndex -= Math.max(
+          getNumOfColsOfRow(getTopRightRowFromIndex(targetPosIndex)),
+          getNumOfColsOfRow(getTopRightRowFromIndex(targetPosIndex) - 1)
+        );
+
+        if (getRightRowFromIndex(targetPosIndex) === rightRow) {
+          if (Board[targetPosIndex] === 0) {
+            moves.push({ startPosIndex, targetPosIndex });
+          }
+
+          if (
+            Board[targetPosIndex + 1] !== 0 &&
+            getPieceColor(Board[targetPosIndex + 1] as unknown as number) !==
+              getPieceColor(piece)
+          ) {
+            moves.push({ startPosIndex, targetPosIndex: targetPosIndex + 1 });
+          }
+
+          if (
+            Board[startPosIndex - 1] !== 0 &&
+            getPieceColor(Board[targetPosIndex - 1] as unknown as number) !==
+              getPieceColor(piece)
+          ) {
+            moves.push({ startPosIndex, targetPosIndex: targetPosIndex - 1 });
+          }
+        }
+      } else if (getPieceColor(piece) === Pieces.black) {
+        targetPosIndex +=
+          Math.min(
+            getNumOfColsOfRow(getTopRightRowFromIndex(targetPosIndex)),
+            getNumOfColsOfRow(getTopRightRowFromIndex(targetPosIndex) + 1)
+          ) + 1;
+
+        if (getRightRowFromIndex(targetPosIndex) === rightRow) {
+          if (Board[targetPosIndex] === 0) {
+            moves.push({ startPosIndex, targetPosIndex });
+          }
+
+          if (
+            Board[targetPosIndex + 1] !== 0 &&
+            getPieceColor(Board[targetPosIndex + 1] as unknown as number) !==
+              getPieceColor(piece)
+          ) {
+            moves.push({ startPosIndex, targetPosIndex: targetPosIndex + 1 });
+          }
+
+          if (
+            Board[startPosIndex - 1] !== 0 &&
+            getPieceColor(Board[targetPosIndex - 1] as unknown as number) !==
+              getPieceColor(piece)
+          ) {
+            moves.push({ startPosIndex, targetPosIndex: targetPosIndex - 1 });
+          }
+        }
+      }
     }
   }
 
