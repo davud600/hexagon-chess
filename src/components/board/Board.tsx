@@ -9,12 +9,12 @@ function BoardPieceComponent({ index }: { index: number }) {
 
   const pieceValue = BoardState.board[index];
 
-  if (!!!pieceValue) return;
+  if (!!!pieceValue) return <></>;
 
   const bin = (pieceValue >>> 0).toString(2);
 
   if (BoardState.board[index] === 0) {
-    return;
+    return <></>;
   }
 
   const imgSrc = `pieces-basic-svg/${bin}.svg`;
