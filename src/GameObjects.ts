@@ -1,7 +1,30 @@
 // To hold all the global objects for pieces and board logic
 
-import { type BoardType, type PiecesType } from "./types/board";
+import {
+  type HexagonSides,
+  type HexagonSlidingSides,
+  type BoardType,
+  type PiecesType,
+} from "./types/board";
 import { getBoardFromFEN } from "./utils/board";
+
+export const HexagonDirections: HexagonSides = {
+  north: "north",
+  south: "south",
+  northEast: "northEast",
+  northWest: "northWest",
+  southEast: "southEast",
+  southWest: "southWest",
+};
+
+export const HexagonSlidingDirections: HexagonSlidingSides = {
+  west: "west",
+  east: "east",
+  northEast: "northEast",
+  northWest: "northWest",
+  southEast: "southEast",
+  southWest: "southWest",
+};
 
 export const Pieces: PiecesType = {
   none: 0,

@@ -28,3 +28,37 @@ export type Move = {
 };
 
 export type BoardType = number[];
+
+export type HexagonSide =
+  | "north"
+  | "south"
+  | "northEast"
+  | "northWest"
+  | "southEast"
+  | "southWest";
+
+export type HexagonSides = {
+  north: HexagonSide;
+  south: HexagonSide;
+  northEast: HexagonSide;
+  northWest: HexagonSide;
+  southEast: HexagonSide;
+  southWest: HexagonSide;
+};
+
+export type HexagonSlidingSide =
+  | "west"
+  | "east"
+  | "northEast"
+  | "northWest"
+  | "southEast"
+  | "southWest";
+
+export type HexagonSlidingSides = {
+  west: HexagonSlidingSide;
+  east: HexagonSlidingSide;
+  northEast: HexagonSlidingSide;
+  northWest: HexagonSlidingSide;
+  southEast: HexagonSlidingSide;
+  southWest: HexagonSlidingSide;
+};
