@@ -25,159 +25,175 @@ export function getMovesFromBoard(
     if (getPieceColor(piece) !== colorToMove) continue;
 
     if (getPieceType(piece) === Pieces.rook) {
-      for (const direction in HexagonDirections) {
-        let targetPosIndex = startPosIndex;
-        fileLoop: for (let i = 0; i < 11; i++) {
-          targetPosIndex = getNeighbor(
-            targetPosIndex,
-            direction as unknown as HexagonSide
-          );
-
-          if (targetPosIndex < 0) break fileLoop;
-
-          if (Board[targetPosIndex] !== 0) {
-            if (
-              getPieceColor(Board[targetPosIndex] as unknown as PieceColor) !==
-              getPieceColor(piece)
-            ) {
-              moves.push({ startPosIndex, targetPosIndex });
-            }
-
-            break;
-          }
-
-          moves.push({ startPosIndex, targetPosIndex });
-        }
-      }
+      getStraightMoves(startPosIndex, Board, piece).forEach((move) => {
+        moves.push(move);
+      });
     } else if (getPieceType(piece) === Pieces.bishop) {
-      for (const direction in HexagonSlidingDirections) {
-        let targetPosIndex = startPosIndex;
-        fileLoop: for (let i = 0; i < 11; i++) {
-          targetPosIndex = getSlidingNeighbor(
-            targetPosIndex,
-            direction as unknown as HexagonSlidingSide
-          );
-
-          if (targetPosIndex < 0) break fileLoop;
-
-          if (Board[targetPosIndex] !== 0) {
-            if (
-              getPieceColor(Board[targetPosIndex] as unknown as PieceColor) !==
-              getPieceColor(piece)
-            ) {
-              moves.push({ startPosIndex, targetPosIndex });
-            }
-
-            break;
-          }
-
-          moves.push({ startPosIndex, targetPosIndex });
-        }
-      }
+      getSlidingMoves(startPosIndex, Board, piece).forEach((move) => {
+        moves.push(move);
+      });
     } else if (getPieceType(piece) === Pieces.queen) {
-      // Straight moves
-      for (const direction in HexagonDirections) {
-        let targetPosIndex = startPosIndex;
-        fileLoop: for (let i = 0; i < 11; i++) {
-          targetPosIndex = getNeighbor(
-            targetPosIndex,
-            direction as unknown as HexagonSide
-          );
+      getStraightMoves(startPosIndex, Board, piece).forEach((move) => {
+        moves.push(move);
+      });
 
-          if (targetPosIndex < 0) break fileLoop;
-
-          if (Board[targetPosIndex] !== 0) {
-            if (
-              getPieceColor(Board[targetPosIndex] as unknown as PieceColor) !==
-              getPieceColor(piece)
-            ) {
-              moves.push({ startPosIndex, targetPosIndex });
-            }
-
-            break;
-          }
-
-          moves.push({ startPosIndex, targetPosIndex });
-        }
-      }
-
-      // Sliding moves
-      for (const direction in HexagonSlidingDirections) {
-        let targetPosIndex = startPosIndex;
-        fileLoop: for (let i = 0; i < 11; i++) {
-          targetPosIndex = getSlidingNeighbor(
-            targetPosIndex,
-            direction as unknown as HexagonSlidingSide
-          );
-
-          if (targetPosIndex < 0) break fileLoop;
-
-          if (Board[targetPosIndex] !== 0) {
-            if (
-              getPieceColor(Board[targetPosIndex] as unknown as PieceColor) !==
-              getPieceColor(piece)
-            ) {
-              moves.push({ startPosIndex, targetPosIndex });
-            }
-
-            break;
-          }
-
-          moves.push({ startPosIndex, targetPosIndex });
-        }
-      }
+      getSlidingMoves(startPosIndex, Board, piece).forEach((move) => {
+        moves.push(move);
+      });
     } else if (getPieceType(piece) === Pieces.king) {
-      // Straight moves
-      for (const direction in HexagonDirections) {
-        let targetPosIndex = startPosIndex;
-        fileLoop: for (let i = 0; i < 1; i++) {
-          targetPosIndex = getNeighbor(
+      getStraightMoves(startPosIndex, Board, piece, 1).forEach((move) => {
+        moves.push(move);
+      });
+
+      getSlidingMoves(startPosIndex, Board, piece, 1).forEach((move) => {
+        moves.push(move);
+      });
+    } else if (getPieceType(piece) === Pieces.pawn) {
+      if (getPieceColor(piece) === Pieces.white) {
+        const targetPosIndex = getNeighbor(
+          startPosIndex,
+          HexagonDirections.north
+        );
+        const targetPiece = Board[targetPosIndex];
+
+        if (targetPiece === 0) {
+          moves.push({
+            startPosIndex,
             targetPosIndex,
-            direction as unknown as HexagonSide
-          );
+          });
+        }
 
-          if (targetPosIndex < 0) break fileLoop;
+        const leftDiagonal = getNeighbor(
+          startPosIndex,
+          HexagonDirections.northWest
+        );
+        const rightDiagonal = getNeighbor(
+          startPosIndex,
+          HexagonDirections.northEast
+        );
 
-          if (Board[targetPosIndex] !== 0) {
-            if (
-              getPieceColor(Board[targetPosIndex] as unknown as PieceColor) !==
-              getPieceColor(piece)
-            ) {
-              moves.push({ startPosIndex, targetPosIndex });
-            }
-
-            break;
+        const leftDiagonalPiece = Board[leftDiagonal];
+        if (leftDiagonalPiece !== undefined && leftDiagonalPiece !== 0) {
+          if (getPieceColor(leftDiagonalPiece) !== getPieceColor(piece)) {
+            moves.push({ startPosIndex, targetPosIndex: leftDiagonal });
           }
+        }
 
-          moves.push({ startPosIndex, targetPosIndex });
+        const rightDiagonalPiece = Board[rightDiagonal];
+        if (rightDiagonalPiece !== undefined && rightDiagonalPiece !== 0) {
+          if (getPieceColor(rightDiagonalPiece) !== getPieceColor(piece)) {
+            moves.push({ startPosIndex, targetPosIndex: rightDiagonal });
+          }
+        }
+      } else {
+        const targetPosIndex = getNeighbor(
+          startPosIndex,
+          HexagonDirections.south
+        );
+        const targetPiece = Board[targetPosIndex];
+
+        if (targetPiece === 0) {
+          moves.push({
+            startPosIndex,
+            targetPosIndex,
+          });
+        }
+
+        const leftDiagonal = getNeighbor(
+          startPosIndex,
+          HexagonDirections.southEast
+        );
+        const rightDiagonal = getNeighbor(
+          startPosIndex,
+          HexagonDirections.southWest
+        );
+
+        const leftDiagonalPiece = Board[leftDiagonal];
+        if (leftDiagonalPiece !== undefined && leftDiagonalPiece !== 0) {
+          if (getPieceColor(leftDiagonalPiece) !== getPieceColor(piece)) {
+            moves.push({ startPosIndex, targetPosIndex: leftDiagonal });
+          }
+        }
+
+        const rightDiagonalPiece = Board[rightDiagonal];
+        if (rightDiagonalPiece !== undefined && rightDiagonalPiece !== 0) {
+          if (getPieceColor(rightDiagonalPiece) !== getPieceColor(piece)) {
+            moves.push({ startPosIndex, targetPosIndex: rightDiagonal });
+          }
         }
       }
+    }
+  }
 
-      // Sliding moves
-      for (const direction in HexagonSlidingDirections) {
-        let targetPosIndex = startPosIndex;
-        fileLoop: for (let i = 0; i < 1; i++) {
-          targetPosIndex = getSlidingNeighbor(
-            targetPosIndex,
-            direction as unknown as HexagonSlidingSide
-          );
+  return moves;
+}
 
-          if (targetPosIndex < 0) break fileLoop;
+function getStraightMoves(
+  startPosIndex: number,
+  Board: BoardType,
+  piece: number,
+  neighborInDirectionLimit = 11
+): Move[] {
+  const moves: Move[] = [];
 
-          if (Board[targetPosIndex] !== 0) {
-            if (
-              getPieceColor(Board[targetPosIndex] as unknown as PieceColor) !==
-              getPieceColor(piece)
-            ) {
-              moves.push({ startPosIndex, targetPosIndex });
-            }
+  for (const direction in HexagonDirections) {
+    let targetPosIndex = startPosIndex;
+    fileLoop: for (let i = 0; i < neighborInDirectionLimit; i++) {
+      targetPosIndex = getNeighbor(
+        targetPosIndex,
+        direction as unknown as HexagonSide
+      );
 
-            break;
-          }
+      if (targetPosIndex < 0) break fileLoop;
 
+      if (Board[targetPosIndex] !== 0) {
+        if (
+          getPieceColor(Board[targetPosIndex] as unknown as PieceColor) !==
+          getPieceColor(piece)
+        ) {
           moves.push({ startPosIndex, targetPosIndex });
         }
+
+        break;
       }
+
+      moves.push({ startPosIndex, targetPosIndex });
+    }
+  }
+
+  return moves;
+}
+
+function getSlidingMoves(
+  startPosIndex: number,
+  Board: BoardType,
+  piece: number,
+  neighborInDirectionLimit = 11
+): Move[] {
+  const moves: Move[] = [];
+
+  for (const direction in HexagonSlidingDirections) {
+    let targetPosIndex = startPosIndex;
+    fileLoop: for (let i = 0; i < neighborInDirectionLimit; i++) {
+      targetPosIndex = getSlidingNeighbor(
+        targetPosIndex,
+        direction as unknown as HexagonSlidingSide
+      );
+
+      if (targetPosIndex < 0) break fileLoop;
+
+      if (Board[targetPosIndex] !== 0) {
+        if (
+          getPieceColor(Board[targetPosIndex] as unknown as PieceColor) !==
+          getPieceColor(piece)
+        ) {
+          moves.push({ startPosIndex, targetPosIndex });
+        }
+
+        break;
+      }
+
+      moves.push({ startPosIndex, targetPosIndex });
     }
   }
 
