@@ -55,12 +55,26 @@ export function getMovesFromBoard(
           HexagonDirections.north
         );
         const targetPiece = Board[targetPosIndex];
-
         if (targetPiece === 0) {
           moves.push({
             startPosIndex,
             targetPosIndex,
           });
+        }
+
+        // Second move for first play
+        if (isAllowedSecondMove(startPosIndex, Pieces.white)) {
+          const secondTargetPiece =
+            Board[getNeighbor(targetPosIndex, HexagonDirections.north)];
+          if (secondTargetPiece === 0) {
+            moves.push({
+              startPosIndex,
+              targetPosIndex: getNeighbor(
+                targetPosIndex,
+                HexagonDirections.north
+              ),
+            });
+          }
         }
 
         const leftDiagonal = getNeighbor(
@@ -97,6 +111,21 @@ export function getMovesFromBoard(
             startPosIndex,
             targetPosIndex,
           });
+        }
+
+        // Second move for first play
+        if (isAllowedSecondMove(startPosIndex, Pieces.black)) {
+          const secondTargetPiece =
+            Board[getNeighbor(targetPosIndex, HexagonDirections.south)];
+          if (secondTargetPiece === 0) {
+            moves.push({
+              startPosIndex,
+              targetPosIndex: getNeighbor(
+                targetPosIndex,
+                HexagonDirections.south
+              ),
+            });
+          }
         }
 
         const leftDiagonal = getNeighbor(
@@ -161,8 +190,6 @@ export function getMovesFromBoard(
           secondDirection
         );
 
-        console.log({ firstTargetPosIndex, secondTargetPosIndex });
-
         const firstTarget = Board[firstTargetPosIndex];
         const secondTarget = Board[secondTargetPosIndex];
 
@@ -188,6 +215,32 @@ export function getMovesFromBoard(
   }
 
   return moves;
+}
+
+function isAllowedSecondMove(
+  startPosIndex: number,
+  pieceColor: PieceColor
+): boolean {
+  return pieceColor === Pieces.white
+    ? startPosIndex === 86 ||
+        startPosIndex === 80 ||
+        startPosIndex === 73 ||
+        startPosIndex === 65 ||
+        startPosIndex === 56 ||
+        startPosIndex === 57 ||
+        startPosIndex === 58 ||
+        startPosIndex === 59 ||
+        startPosIndex === 60
+    : startPosIndex === 86 ||
+        startPosIndex === 30 ||
+        startPosIndex === 31 ||
+        startPosIndex === 32 ||
+        startPosIndex === 33 ||
+        startPosIndex === 34 ||
+        startPosIndex === 25 ||
+        startPosIndex === 17 ||
+        startPosIndex === 10 ||
+        startPosIndex === 4;
 }
 
 function getStraightMoves(
