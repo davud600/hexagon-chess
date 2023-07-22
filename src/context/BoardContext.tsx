@@ -7,7 +7,7 @@ import {
   useContext,
   useEffect,
 } from "react";
-import { Board as InitialBoard, Pieces } from "~/GameObjects";
+import { Board as InitialBoard, Pieces } from "~/BoardObjects";
 import {
   type SelectedPieceType,
   type BoardType,

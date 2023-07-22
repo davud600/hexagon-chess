@@ -2,7 +2,7 @@ import {
   HexagonDirections,
   HexagonSlidingDirections,
   Pieces,
-} from "~/GameObjects";
+} from "~/BoardObjects";
 import {
   type Move,
   type BoardType,

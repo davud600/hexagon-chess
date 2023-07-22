@@ -1,4 +1,4 @@
-import { PieceColor, PieceIndex } from "~/types/board";
+import { type PieceColor, type PieceIndex } from "~/types/board";
 
 export function getPieceColor(pieceValue: number): PieceColor {
   const bin = (pieceValue >>> 0).toString(2);
