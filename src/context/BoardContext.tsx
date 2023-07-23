@@ -14,7 +14,7 @@ import {
   type Move,
   type PieceColor,
 } from "~/types/board";
-import { getMovesFromBoard } from "~/utils/board";
+import { getLegalMovesFromBoard } from "~/utils/board";
 
 type BoardContextData = {
   BoardState: {
@@ -46,7 +46,7 @@ const BoardContext = createContext<BoardContextData>({
     setSelectedPiece: () => false,
   },
   MovesState: {
-    moves: getMovesFromBoard(InitialBoard, Pieces.white),
+    moves: getLegalMovesFromBoard(InitialBoard, Pieces.white),
     setMoves: () => false,
   },
   ColorToMoveState: {
@@ -67,11 +67,11 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
   );
   const [colorToMove, setColorToMove] = useState<PieceColor>(Pieces.white);
   const [moves, setMoves] = useState<Move[]>(
-    getMovesFromBoard(board, colorToMove)
+    getLegalMovesFromBoard(board, colorToMove)
   );
 
   useEffect(() => {
-    setMoves(getMovesFromBoard(board, colorToMove));
+    setMoves(getLegalMovesFromBoard(board, colorToMove));
   }, [board, colorToMove]);
 
   const makeMove = (index: number) => {

@@ -12,6 +12,50 @@ import {
 } from "~/types/board";
 import { getPieceColor, getPieceType } from "./piece";
 
+export function getLegalMovesFromBoard(
+  Board: BoardType,
+  colorToMove: PieceColor
+): Move[] {
+  const moves: Move[] = [];
+
+  getMovesFromBoard(Board, colorToMove).forEach((pseudoLegalMove) => {
+    let moveIsLegal = true;
+
+    // make move and get new board
+    const updatedBoard = [...Board];
+    updatedBoard[pseudoLegalMove.startPosIndex] = 0;
+    updatedBoard[pseudoLegalMove.targetPosIndex] = Board[
+      pseudoLegalMove.startPosIndex
+    ] as unknown as number;
+
+    // find king
+    let kingPosIndex = 0;
+    for (let i = 0; i < 91; i++) {
+      if (
+        getPieceType(updatedBoard[i] as unknown as number) === Pieces.king &&
+        getPieceColor(updatedBoard[i] as unknown as number) === colorToMove
+      ) {
+        kingPosIndex = i;
+      }
+    }
+
+    // get moves of that new board
+    // check if any of the move.targetPosition is the same as the posIndex for the king
+    getMovesFromBoard(updatedBoard, colorToMove === 8 ? 16 : 8).forEach(
+      (updatedBoardMove) => {
+        if (updatedBoardMove.targetPosIndex === kingPosIndex)
+          moveIsLegal = false;
+      }
+    );
+
+    if (moveIsLegal) {
+      moves.push({ ...pseudoLegalMove });
+    }
+  });
+
+  return moves;
+}
+
 export function getMovesFromBoard(
   Board: BoardType,
   colorToMove: PieceColor
