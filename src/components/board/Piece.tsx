@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { useBoard } from "~/context/BoardContext";
+import { getPieceColor } from "~/utils/board/piece";
 
 export default function BoardPiece({ index }: { index: number }) {
   const { BoardState, SelectedPieceState } = useBoard();
@@ -12,12 +13,22 @@ export default function BoardPiece({ index }: { index: number }) {
   const imgSrc = `pieces-basic-svg/${bin}.svg`;
 
   const handleOnDragStart = () => {
-    if (!!SelectedPieceState.selectedPiece) return;
+    if (
+      !!SelectedPieceState.selectedPiece &&
+      getPieceColor(SelectedPieceState.selectedPiece.pieceValue) !==
+        getPieceColor(pieceValue)
+    )
+      return;
     SelectedPieceState.setSelectedPiece({ pieceValue, posIndex: index });
   };
 
   const handleOnClick = () => {
-    if (!!SelectedPieceState.selectedPiece) return;
+    if (
+      !!SelectedPieceState.selectedPiece &&
+      getPieceColor(SelectedPieceState.selectedPiece.pieceValue) !==
+        getPieceColor(pieceValue)
+    )
+      return;
     SelectedPieceState.setSelectedPiece({ pieceValue, posIndex: index });
   };
 

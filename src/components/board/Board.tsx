@@ -1,7 +1,7 @@
 import BoardProvider from "~/context/BoardContext";
 import BoardModule from "./Module";
 
-export default function BoardComponent() {
+export default function Board() {
   return (
     <BoardProvider>
       <div className="flex h-full w-full items-center justify-center">

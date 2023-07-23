@@ -1,4 +1,4 @@
-import { Move, type ModuleColor } from "~/types/board";
+import { type Move, type ModuleColor } from "~/types/board";
 import { useBoard } from "~/context/BoardContext";
 import { type DragEvent } from "react";
 import { movesIncludeMove } from "~/utils/board/board";
@@ -42,11 +42,10 @@ export default function BoardModule({
       return;
 
     if (
-      verifyMove(
-        MovesState.moves,
-        SelectedPieceState.selectedPiece.posIndex,
-        index
-      )
+      verifyMove({
+        startPosIndex: SelectedPieceState.selectedPiece.posIndex,
+        targetPosIndex: index,
+      })
     )
       makeMove(index);
   };
@@ -61,7 +60,8 @@ export default function BoardModule({
     if ((BoardState.board[index] || -1) > 0) {
       if (
         getPieceColor(SelectedPieceState.selectedPiece.pieceValue) ===
-        getPieceColor(BoardState.board[index] as unknown as number)
+          getPieceColor(BoardState.board[index] as unknown as number) &&
+        SelectedPieceState.selectedPiece.posIndex !== index
       ) {
         SelectedPieceState.setSelectedPiece({
           pieceValue: BoardState.board[index] as unknown as number,
@@ -72,26 +72,16 @@ export default function BoardModule({
     }
 
     if (
-      verifyMove(
-        MovesState.moves,
-        SelectedPieceState.selectedPiece.posIndex,
-        index
-      )
+      verifyMove({
+        startPosIndex: SelectedPieceState.selectedPiece.posIndex,
+        targetPosIndex: index,
+      })
     )
       makeMove(index);
   };
 
-  const verifyMove = (
-    moves: Move[],
-    startPosIndex: number,
-    targetPosIndex: number
-  ): boolean => {
-    if (
-      !movesIncludeMove(moves, {
-        startPosIndex,
-        targetPosIndex,
-      })
-    ) {
+  const verifyMove = (move: Move): boolean => {
+    if (!movesIncludeMove(MovesState.moves, move)) {
       SelectedPieceState.setSelectedPiece(null);
       return false;
     }
