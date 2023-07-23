@@ -3,6 +3,7 @@ import { type ModuleColor } from "~/types/board";
 import BoardProvider, { useBoard } from "~/context/BoardContext";
 import { type DragEvent } from "react";
 import { movesIncludeMove } from "~/utils/board";
+import { getPieceColor } from "~/utils/piece";
 
 function BoardPiece({ index }: { index: number }) {
   const { BoardState, SelectedPieceState } = useBoard();
@@ -52,7 +53,7 @@ function BoardPiece({ index }: { index: number }) {
 }
 
 function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
-  const { MovesState, SelectedPieceState, makeMove } = useBoard();
+  const { MovesState, SelectedPieceState, BoardState, makeMove } = useBoard();
 
   if (SelectedPieceState.selectedPiece?.posIndex === index) {
     color = "selected";
@@ -100,6 +101,19 @@ function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
       SelectedPieceState.selectedPiece === undefined
     )
       return;
+
+    if ((BoardState.board[index] || -1) > 0) {
+      if (
+        getPieceColor(SelectedPieceState.selectedPiece.pieceValue) ===
+        getPieceColor(BoardState.board[index] as unknown as number)
+      ) {
+        SelectedPieceState.setSelectedPiece({
+          pieceValue: BoardState.board[index] as unknown as number,
+          posIndex: index,
+        });
+        return;
+      }
+    }
 
     if (
       !movesIncludeMove(MovesState.moves, {
