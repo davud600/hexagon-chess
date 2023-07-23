@@ -14,7 +14,7 @@ import {
   type Move,
   type PieceColor,
 } from "~/types/board";
-import { getLegalMovesFromBoard } from "~/utils/board";
+import { getLegalMovesFromBoard } from "~/utils/board/moves";
 
 type BoardContextData = {
   BoardState: {
