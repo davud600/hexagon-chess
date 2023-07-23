@@ -153,10 +153,19 @@ export function getMovesFromBoard(
       }
     } else if (getPieceType(piece) === Pieces.knight) {
       for (const direction in HexagonDirections) {
-        const directionTarget = getNeighbor(
-          getNeighbor(startPosIndex, direction as unknown as HexagonSide),
+        const firstDirectionTarget = getNeighbor(
+          startPosIndex,
           direction as unknown as HexagonSide
         );
+
+        if (firstDirectionTarget < 0) continue;
+
+        const directionTarget = getNeighbor(
+          firstDirectionTarget,
+          direction as unknown as HexagonSide
+        );
+
+        if (directionTarget < 0) continue;
 
         let firstDirection: HexagonSide = direction as unknown as HexagonSide;
         let secondDirection: HexagonSide = direction as unknown as HexagonSide;
@@ -193,22 +202,36 @@ export function getMovesFromBoard(
         const firstTarget = Board[firstTargetPosIndex];
         const secondTarget = Board[secondTargetPosIndex];
 
-        if (firstTarget === undefined || secondTarget === undefined) continue;
-
-        if (
-          firstTarget === 0 ||
-          (firstTarget !== 0 &&
-            getPieceColor(firstTarget) !== getPieceColor(piece))
-        ) {
-          moves.push({ startPosIndex, targetPosIndex: firstTargetPosIndex });
+        if (startPosIndex === 52) {
+          console.log({
+            firstTargetPosIndex,
+            secondTargetPosIndex,
+            firstTarget,
+            secondTarget,
+            direction,
+            firstDirectionTarget,
+            directionTarget,
+          });
         }
 
-        if (
-          secondTarget === 0 ||
-          (secondTarget !== 0 &&
-            getPieceColor(secondTarget) !== getPieceColor(piece))
-        ) {
-          moves.push({ startPosIndex, targetPosIndex: secondTargetPosIndex });
+        if (firstTarget !== undefined) {
+          if (
+            firstTarget === 0 ||
+            (firstTarget !== 0 &&
+              getPieceColor(firstTarget) !== getPieceColor(piece))
+          ) {
+            moves.push({ startPosIndex, targetPosIndex: firstTargetPosIndex });
+          }
+        }
+
+        if (secondTarget !== undefined) {
+          if (
+            secondTarget === 0 ||
+            (secondTarget !== 0 &&
+              getPieceColor(secondTarget) !== getPieceColor(piece))
+          ) {
+            moves.push({ startPosIndex, targetPosIndex: secondTargetPosIndex });
+          }
         }
       }
     }

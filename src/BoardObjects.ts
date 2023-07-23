@@ -41,7 +41,7 @@ export const Pieces: PiecesType = {
 
 export let Board: BoardType = [];
 
-Board = getBoardFromFEN(
-  "bknrp1/qb2p2/n1b1p3/r3p4/ppppp5/11/5PPPPP/4P3R/3P1B1N/2P2BK/1PRNQB"
-);
-// Board = getBoardFromFEN("6/7/8/9/4n5/11/3P6/3P5/8/7/6");
+// Board = getBoardFromFEN(
+//   "bknrp1/qb2p2/n1b1p3/r3p4/ppppp5/11/5PPPPP/4P3R/3P1B1N/2P2BK/1PRNQB"
+// );
+Board = getBoardFromFEN("6/7/8/9/4n5/11/10/3N5/8/7/6");
