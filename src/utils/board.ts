@@ -60,20 +60,20 @@ export function getMovesFromBoard(
             startPosIndex,
             targetPosIndex,
           });
-        }
 
-        // Second move for first play
-        if (isAllowedSecondMove(startPosIndex, Pieces.white)) {
-          const secondTargetPiece =
-            Board[getNeighbor(targetPosIndex, HexagonDirections.north)];
-          if (secondTargetPiece === 0) {
-            moves.push({
-              startPosIndex,
-              targetPosIndex: getNeighbor(
-                targetPosIndex,
-                HexagonDirections.north
-              ),
-            });
+          // Second move for first play
+          if (isAllowedSecondMove(startPosIndex, Pieces.white)) {
+            const secondTargetPiece =
+              Board[getNeighbor(targetPosIndex, HexagonDirections.north)];
+            if (secondTargetPiece === 0) {
+              moves.push({
+                startPosIndex,
+                targetPosIndex: getNeighbor(
+                  targetPosIndex,
+                  HexagonDirections.north
+                ),
+              });
+            }
           }
         }
 
@@ -111,20 +111,20 @@ export function getMovesFromBoard(
             startPosIndex,
             targetPosIndex,
           });
-        }
 
-        // Second move for first play
-        if (isAllowedSecondMove(startPosIndex, Pieces.black)) {
-          const secondTargetPiece =
-            Board[getNeighbor(targetPosIndex, HexagonDirections.south)];
-          if (secondTargetPiece === 0) {
-            moves.push({
-              startPosIndex,
-              targetPosIndex: getNeighbor(
-                targetPosIndex,
-                HexagonDirections.south
-              ),
-            });
+          // Second move for first play
+          if (isAllowedSecondMove(startPosIndex, Pieces.black)) {
+            const secondTargetPiece =
+              Board[getNeighbor(targetPosIndex, HexagonDirections.south)];
+            if (secondTargetPiece === 0) {
+              moves.push({
+                startPosIndex,
+                targetPosIndex: getNeighbor(
+                  targetPosIndex,
+                  HexagonDirections.south
+                ),
+              });
+            }
           }
         }
 
