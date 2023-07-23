@@ -1,4 +1,4 @@
-export type ModuleColor = "light" | "neutral" | "dark";
+export type ModuleColor = "light" | "neutral" | "dark" | "legal" | "selected";
 
 export type PieceIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 

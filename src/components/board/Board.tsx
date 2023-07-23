@@ -4,7 +4,7 @@ import BoardProvider, { useBoard } from "~/context/BoardContext";
 import { type DragEvent } from "react";
 import { movesIncludeMove } from "~/utils/board";
 
-function BoardPieceComponent({ index }: { index: number }) {
+function BoardPiece({ index }: { index: number }) {
   const { BoardState, SelectedPieceState } = useBoard();
 
   const pieceValue = BoardState.board[index];
@@ -54,6 +54,18 @@ function BoardPieceComponent({ index }: { index: number }) {
 function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
   const { MovesState, SelectedPieceState, makeMove } = useBoard();
 
+  if (SelectedPieceState.selectedPiece?.posIndex === index) {
+    color = "selected";
+  } else {
+    MovesState.moves.forEach((move) => {
+      if (
+        move.targetPosIndex === index &&
+        move.startPosIndex === SelectedPieceState.selectedPiece?.posIndex
+      )
+        color = "legal";
+    });
+  }
+
   const className = `hexagon hex ${color}`;
 
   const handleOnDragOver = (e: DragEvent<HTMLDivElement>) => {
@@ -102,12 +114,6 @@ function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
     makeMove(index);
   };
 
-  let textColor = "";
-
-  MovesState.moves.forEach((move) => {
-    if (move.targetPosIndex === index) textColor = "text-red-500";
-  });
-
   return (
     <div
       className={className}
@@ -115,12 +121,7 @@ function BoardModule({ index, color }: { index: number; color: ModuleColor }) {
       onDrop={(e) => handleOnDrop(e)}
       onClick={handleOnClick}
     >
-      <span
-        className={`absolute bottom-0 right-0 z-10 -rotate-[30deg] ${textColor}`}
-      >
-        {index}
-      </span>
-      <BoardPieceComponent index={index} />
+      <BoardPiece index={index} />
     </div>
   );
 }

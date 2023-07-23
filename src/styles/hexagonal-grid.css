@@ -13,6 +13,16 @@
 .hexagon.hex.dark::after {
   background-color: #448541 !important;
 }
+.hexagon.hex.selected,
+.hexagon.hex.selected::before,
+.hexagon.hex.selected::after {
+  background-color: orange !important;
+}
+.hexagon.hex.legal,
+.hexagon.hex.legal::before,
+.hexagon.hex.legal::after {
+  background-color: red !important;
+}
 
 .manehex .hexagon {
   width: 60px;
