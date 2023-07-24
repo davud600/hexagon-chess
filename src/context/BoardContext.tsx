@@ -14,6 +14,7 @@ import {
   type Move,
   type PieceColor,
 } from "~/types/board";
+import { getFenFromBoard } from "~/utils/board/board";
 import { getLegalMovesFromBoard } from "~/utils/board/moves";
 
 type BoardContextData = {
@@ -34,6 +35,10 @@ type BoardContextData = {
     setColorToMove: Dispatch<SetStateAction<PieceColor>>;
   };
   makeMove: (index: number) => void;
+  BoardHistoryState: {
+    boardHistory: string[];
+    setBoardHistory: Dispatch<SetStateAction<string[]>>;
+  };
 };
 
 const BoardContext = createContext<BoardContextData>({
@@ -54,6 +59,10 @@ const BoardContext = createContext<BoardContextData>({
     setColorToMove: () => false,
   },
   makeMove: () => false,
+  BoardHistoryState: {
+    boardHistory: [],
+    setBoardHistory: () => false,
+  },
 });
 
 export function useBoard() {
@@ -69,10 +78,25 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
   const [moves, setMoves] = useState<Move[]>(
     getLegalMovesFromBoard(board, colorToMove)
   );
+  const [boardHistory, setBoardHistory] = useState<string[]>([]);
 
   useEffect(() => {
     setMoves(getLegalMovesFromBoard(board, colorToMove));
   }, [board, colorToMove]);
+
+  useEffect(() => {
+    setBoardHistory((prevBoardHistory) => {
+      const updatedBoardHistory = [...prevBoardHistory];
+
+      updatedBoardHistory.push(getFenFromBoard(board));
+
+      return updatedBoardHistory;
+    });
+  }, [board]);
+
+  useEffect(() => {
+    console.log({ boardHistory });
+  }, [boardHistory]);
 
   const makeMove = (index: number) => {
     setBoard((prevBoard) => {
@@ -108,6 +132,10 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
       setColorToMove,
     },
     makeMove,
+    BoardHistoryState: {
+      boardHistory,
+      setBoardHistory,
+    },
   };
 
   return (

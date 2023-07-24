@@ -9,6 +9,7 @@ import {
   type HexagonSide,
   type HexagonSlidingSide,
 } from "~/types/board";
+import { getPieceColor, getPieceType } from "./piece";
 
 export function getNeighbor(posIndex: number, direction: HexagonSide): number {
   let targetPosIndex = posIndex;
@@ -155,6 +156,86 @@ export function movesIncludeMove(moves: Move[], move: Move): boolean {
   });
 
   return movesIncludeMove;
+}
+
+export function getFenFromBoard(board: BoardType): string {
+  let fen = "";
+
+  for (let file = 0; file < 11; file++) {
+    let emptyModules = 0;
+    for (let rank = 0; rank < getNumOfRanksOfFile(file); rank++) {
+      let pieceToAdd = "";
+
+      if (board[getPosFromFileAndRank(file, rank)] === 0) {
+        emptyModules++;
+      } else {
+        if (emptyModules > 0) {
+          fen += emptyModules.toString();
+          emptyModules = 0;
+        }
+
+        if (
+          getPieceType(
+            board[getPosFromFileAndRank(file, rank)] as unknown as number
+          ) === Pieces.pawn
+        ) {
+          pieceToAdd = "p";
+        } else if (
+          getPieceType(
+            board[getPosFromFileAndRank(file, rank)] as unknown as number
+          ) === Pieces.king
+        ) {
+          pieceToAdd = "k";
+        } else if (
+          getPieceType(
+            board[getPosFromFileAndRank(file, rank)] as unknown as number
+          ) === Pieces.bishop
+        ) {
+          pieceToAdd = "b";
+        } else if (
+          getPieceType(
+            board[getPosFromFileAndRank(file, rank)] as unknown as number
+          ) === Pieces.knight
+        ) {
+          pieceToAdd = "n";
+        } else if (
+          getPieceType(
+            board[getPosFromFileAndRank(file, rank)] as unknown as number
+          ) === Pieces.queen
+        ) {
+          pieceToAdd = "q";
+        } else if (
+          getPieceType(
+            board[getPosFromFileAndRank(file, rank)] as unknown as number
+          ) === Pieces.rook
+        ) {
+          pieceToAdd = "r";
+        }
+      }
+
+      pieceToAdd =
+        getPieceColor(
+          board[getPosFromFileAndRank(file, rank)] as unknown as number
+        ) === Pieces.white
+          ? pieceToAdd.toUpperCase()
+          : pieceToAdd.toLowerCase();
+
+      fen += pieceToAdd;
+
+      if (rank === getNumOfRanksOfFile(file) - 1) {
+        if (emptyModules > 0) {
+          fen += emptyModules.toString();
+          emptyModules = 0;
+        }
+
+        if (file < 10) {
+          fen += "/";
+        }
+      }
+    }
+  }
+
+  return fen;
 }
 
 export function getBoardFromFEN(FEN: string): BoardType {
