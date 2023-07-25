@@ -85,9 +85,9 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
       return updatedBoard;
     });
 
-    setColorToMove((prevColorToMove) => {
-      return prevColorToMove === Pieces.white ? Pieces.black : Pieces.white;
-    });
+    setColorToMove((prevColorToMove) =>
+      prevColorToMove === Pieces.white ? Pieces.black : Pieces.white
+    );
   };
 
   const value = {

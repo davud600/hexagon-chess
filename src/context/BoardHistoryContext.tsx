@@ -7,6 +7,7 @@ import {
   useState,
   useEffect,
 } from "react";
+import { Pieces } from "~/BoardObjects";
 import { getBoardFromFEN, getFenFromBoard } from "~/utils/board/board";
 import { useBoard } from "./BoardContext";
 
@@ -39,7 +40,7 @@ export default function BoardHistoryProvider({
 }: {
   children: ReactNode;
 }) {
-  const { BoardState } = useBoard();
+  const { BoardState, MovesState } = useBoard();
 
   const [boardHistory, setBoardHistory] = useState<string[]>([
     getFenFromBoard(BoardState.board),
@@ -74,6 +75,11 @@ export default function BoardHistoryProvider({
     if (boardHistory.length === 0) return;
     setViewingBoardIndex(boardHistory.length - 1);
   }, [boardHistory]);
+
+  useEffect(() => {
+    if (isViewingHistory() && MovesState.moves.length > 0)
+      MovesState.setMoves([]);
+  }, [MovesState.moves]);
 
   const viewPreviousBoardInHistory = () => {
     if (boardHistory.length <= 1 || viewingBoardIndex < 1) return;
