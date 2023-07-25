@@ -75,6 +75,7 @@ export default function BoardHistoryProvider({
   useEffect(() => {
     if (isViewingHistory() && MovesState.moves.length > 0)
       MovesState.setMoves([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [MovesState.moves]);
 
   const viewPreviousBoardInHistory = () => {

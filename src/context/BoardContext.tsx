@@ -86,6 +86,7 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     }
 
     console.log(`winner: ${gameRes}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moves]);
 
   const makeMove = (index: number) => {
