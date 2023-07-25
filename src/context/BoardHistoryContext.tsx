@@ -7,7 +7,6 @@ import {
   useState,
   useEffect,
 } from "react";
-import { Pieces } from "~/BoardObjects";
 import { getBoardFromFEN, getFenFromBoard } from "~/utils/board/board";
 import { useBoard } from "./BoardContext";
 
@@ -56,8 +55,10 @@ export default function BoardHistoryProvider({
 
       if (
         updatedBoardHistory[updatedBoardHistory.length - 1] !== currentBoardFen
-      )
+      ) {
         updatedBoardHistory.push(currentBoardFen);
+        setViewingBoardIndex(updatedBoardHistory.length - 1);
+      }
 
       return updatedBoardHistory;
     });
@@ -70,11 +71,6 @@ export default function BoardHistoryProvider({
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [viewingBoardIndex]);
-
-  useEffect(() => {
-    if (boardHistory.length === 0) return;
-    setViewingBoardIndex(boardHistory.length - 1);
-  }, [boardHistory]);
 
   useEffect(() => {
     if (isViewingHistory() && MovesState.moves.length > 0)

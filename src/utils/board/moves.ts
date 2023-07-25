@@ -11,7 +11,7 @@ import {
   HexagonSlidingDirections,
   Pieces,
 } from "~/BoardObjects";
-import { getNeighbor, getSlidingNeighbor } from "./board";
+import { getNeighbor, getSlidingNeighbor, isInCheck } from "./board";
 
 export function getLegalMovesFromBoard(
   Board: BoardType,
@@ -29,25 +29,7 @@ export function getLegalMovesFromBoard(
       pseudoLegalMove.startPosIndex
     ] as unknown as number;
 
-    // find king
-    let kingPosIndex = 0;
-    for (let i = 0; i < 91; i++) {
-      if (
-        getPieceType(updatedBoard[i] as unknown as number) === Pieces.king &&
-        getPieceColor(updatedBoard[i] as unknown as number) === colorToMove
-      ) {
-        kingPosIndex = i;
-      }
-    }
-
-    // get moves of that new board
-    // check if any of the move.targetPosition is the same as the posIndex for the king
-    getMovesFromBoard(updatedBoard, colorToMove === 8 ? 16 : 8).forEach(
-      (updatedBoardMove) => {
-        if (updatedBoardMove.targetPosIndex === kingPosIndex)
-          moveIsLegal = false;
-      }
-    );
+    moveIsLegal = !isInCheck(updatedBoard, colorToMove);
 
     if (moveIsLegal) {
       moves.push({ ...pseudoLegalMove });

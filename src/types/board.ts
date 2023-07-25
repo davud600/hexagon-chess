@@ -62,3 +62,5 @@ export type HexagonSlidingSides = {
   southEast: HexagonSlidingSide;
   southWest: HexagonSlidingSide;
 };
+
+export type GameResultType = 8 | 16 | 0;

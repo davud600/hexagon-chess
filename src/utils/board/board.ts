@@ -8,8 +8,49 @@ import {
   type BoardType,
   type HexagonSide,
   type HexagonSlidingSide,
+  PieceColor,
+  GameResultType,
 } from "~/types/board";
+import { getMovesFromBoard } from "./moves";
 import { getPieceColor, getPieceType } from "./piece";
+
+export function getGameResult(
+  board: BoardType,
+  colorToMove: PieceColor
+): GameResultType {
+  let result: GameResultType = 0; // draw
+
+  if (isInCheck(board, colorToMove)) {
+    result = colorToMove;
+  }
+
+  return result;
+}
+
+export function isInCheck(board: BoardType, colorToMove: PieceColor): boolean {
+  let isInCheck = false;
+
+  // find king
+  let kingPosIndex = 0;
+  for (let i = 0; i < 91; i++) {
+    if (
+      getPieceType(board[i] as unknown as number) === Pieces.king &&
+      getPieceColor(board[i] as unknown as number) === colorToMove
+    ) {
+      kingPosIndex = i;
+    }
+  }
+
+  // get moves of that new board
+  // check if any of the move.targetPosition is the same as the posIndex for the king
+  getMovesFromBoard(board, colorToMove === 8 ? 16 : 8).forEach(
+    (updatedBoardMove) => {
+      if (updatedBoardMove.targetPosIndex === kingPosIndex) isInCheck = true;
+    }
+  );
+
+  return isInCheck;
+}
 
 export function getNeighbor(posIndex: number, direction: HexagonSide): number {
   let targetPosIndex = posIndex;

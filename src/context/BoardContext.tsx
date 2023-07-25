@@ -14,6 +14,7 @@ import {
   type Move,
   type PieceColor,
 } from "~/types/board";
+import { getGameResult } from "~/utils/board/board";
 import { getLegalMovesFromBoard } from "~/utils/board/moves";
 
 type BoardContextData = {
@@ -73,6 +74,19 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setMoves(getLegalMovesFromBoard(board, colorToMove));
   }, [board, colorToMove]);
+
+  useEffect(() => {
+    if (moves.length > 0) return;
+
+    const gameRes = getGameResult(board, colorToMove);
+
+    if (gameRes === 0) {
+      console.log("draw");
+      return;
+    }
+
+    console.log(`winner: ${gameRes}`);
+  }, [moves]);
 
   const makeMove = (index: number) => {
     setBoard((prevBoard) => {
