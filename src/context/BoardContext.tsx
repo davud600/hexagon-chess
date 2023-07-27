@@ -8,12 +8,14 @@ import {
   useEffect,
 } from "react";
 import { Board as InitialBoard, Pieces } from "~/BoardObjects";
+import { GameModes } from "~/SettingsObjects";
 import {
   type SelectedPieceType,
   type BoardType,
   type Move,
   type PieceColor,
 } from "~/types/board";
+import { aiGetMove } from "~/utils/board/ai";
 import { getGameResult } from "~/utils/board/board";
 import { getLegalMovesFromBoard } from "~/utils/board/moves";
 import { useSettings } from "./GameSettingsContext";
@@ -63,6 +65,8 @@ export function useBoard() {
 }
 
 export default function BoardProvider({ children }: { children: ReactNode }) {
+  const { gameMode, aiColor } = useSettings();
+
   const [board, setBoard] = useState<BoardType>(InitialBoard);
   const [selectedPiece, setSelectedPiece] = useState<SelectedPieceType | null>(
     null
@@ -77,6 +81,17 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
   }, [board, colorToMove]);
 
   useEffect(() => {
+    if (gameMode === GameModes.LocalMultiPlayer) return;
+
+    // Local vs ai...
+    if (colorToMove === aiColor) {
+      const aiMove = aiGetMove(moves);
+
+      console.log(aiMove);
+
+      makeMove(aiMove.targetPosIndex, aiMove.startPosIndex);
+    }
+
     if (moves.length > 0) return;
 
     const gameRes = getGameResult(board, colorToMove);
@@ -89,16 +104,25 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     console.log(`winner: ${gameRes}`);
   }, [moves]);
 
-  const makeMove = (index: number) => {
-    setBoard((prevBoard) => {
-      if (selectedPiece === null) return prevBoard;
+  const makeMove = (index: number, startPosIndex?: number) => {
+    if (startPosIndex !== undefined) {
+      setBoard((prevBoard) => {
+        const updatedBoard = [...prevBoard];
+        updatedBoard[startPosIndex] = 0;
+        updatedBoard[index] = prevBoard[startPosIndex] as unknown as number;
+        return updatedBoard;
+      });
+    } else {
+      setBoard((prevBoard) => {
+        if (selectedPiece === null) return prevBoard;
 
-      const updatedBoard = [...prevBoard];
-      updatedBoard[selectedPiece.posIndex] = 0;
-      updatedBoard[index] = selectedPiece.pieceValue;
-      setSelectedPiece(null);
-      return updatedBoard;
-    });
+        const updatedBoard = [...prevBoard];
+        updatedBoard[selectedPiece.posIndex] = 0;
+        updatedBoard[index] = selectedPiece.pieceValue;
+        setSelectedPiece(null);
+        return updatedBoard;
+      });
+    }
 
     setColorToMove((prevColorToMove) =>
       prevColorToMove === Pieces.white ? Pieces.black : Pieces.white
