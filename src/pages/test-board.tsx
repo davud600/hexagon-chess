@@ -1,20 +1,7 @@
 import Board from "~/components/board/Board";
+import BoardHistoryControllers from "~/components/board/HistoryControllers";
 import BoardProvider from "~/context/BoardContext";
-import BoardHistoryProvider, {
-  useBoardHistory,
-} from "~/context/BoardHistoryContext";
-
-function BoardHistoryControllers() {
-  const { viewNextBoardInHistory, viewPreviousBoardInHistory } =
-    useBoardHistory();
-
-  return (
-    <div className="bg-red flex w-full justify-center">
-      <button onClick={viewPreviousBoardInHistory}>prev board</button>
-      <button onClick={viewNextBoardInHistory}>next board</button>
-    </div>
-  );
-}
+import BoardHistoryProvider from "~/context/BoardHistoryContext";
 
 export default function Test() {
   return (
