@@ -16,6 +16,7 @@ import {
 } from "~/types/board";
 import { getGameResult } from "~/utils/board/board";
 import { getLegalMovesFromBoard } from "~/utils/board/moves";
+import { useSettings } from "./GameSettingsContext";
 
 type BoardContextData = {
   BoardState: {
