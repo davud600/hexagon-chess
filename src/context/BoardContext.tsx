@@ -109,19 +109,21 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
 
     // Local vs ai...
     if (colorToMove === aiColor) {
-      const aiMove = aiGetMove(moves);
+      const aiMove = aiGetMove(moves, board, aiColor);
 
       if (aiMove === undefined) return;
 
       makeMove(aiMove.targetPosIndex, aiMove.startPosIndex);
     }
 
-    if (moves.length > 0 && !isViewingHistory()) return;
+    if (isViewingHistory()) return;
 
-    const gameRes = getGameResult(board, colorToMove);
+    const gameRes = getGameResult(board, colorToMove, moves);
+
+    if (gameRes === 1) return; // game hasn't ended
 
     if (gameRes === 0) {
-      console.log("draw");
+      console.log("stalemate");
       return;
     }
 
