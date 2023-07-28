@@ -87,7 +87,7 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     if (colorToMove === aiColor) {
       const aiMove = aiGetMove(moves);
 
-      console.log(aiMove);
+      if (aiMove === undefined) return;
 
       makeMove(aiMove.targetPosIndex, aiMove.startPosIndex);
     }
