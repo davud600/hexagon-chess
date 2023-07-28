@@ -1,7 +1,6 @@
 import Board from "~/components/board/Board";
 import BoardHistoryControllers from "~/components/board/HistoryControllers";
 import BoardProvider from "~/context/BoardContext";
-import BoardHistoryProvider from "~/context/BoardHistoryContext";
 import GameSettingsProvider from "~/context/GameSettingsContext";
 
 export default function Test() {
@@ -9,10 +8,8 @@ export default function Test() {
     <>
       <GameSettingsProvider>
         <BoardProvider>
-          <BoardHistoryProvider>
-            <BoardHistoryControllers />
-            <Board />
-          </BoardHistoryProvider>
+          <BoardHistoryControllers />
+          <Board />
         </BoardProvider>
       </GameSettingsProvider>
     </>

@@ -16,7 +16,11 @@ import {
   type PieceColor,
 } from "~/types/board";
 import { aiGetMove } from "~/utils/board/ai";
-import { getGameResult } from "~/utils/board/board";
+import {
+  getBoardFromFEN,
+  getFenFromBoard,
+  getGameResult,
+} from "~/utils/board/board";
 import { getLegalMovesFromBoard } from "~/utils/board/moves";
 import { useSettings } from "./GameSettingsContext";
 
@@ -37,6 +41,13 @@ type BoardContextData = {
     colorToMove: PieceColor;
     setColorToMove: Dispatch<SetStateAction<PieceColor>>;
   };
+  HistoryState: {
+    boardHistory: string[];
+    setBoardHistory: Dispatch<SetStateAction<string[]>>;
+  };
+  viewPreviousBoardInHistory: () => void;
+  viewNextBoardInHistory: () => void;
+  isViewingHistory: () => boolean;
   makeMove: (index: number) => void;
 };
 
@@ -57,6 +68,13 @@ const BoardContext = createContext<BoardContextData>({
     colorToMove: Pieces.white,
     setColorToMove: () => false,
   },
+  HistoryState: {
+    boardHistory: [],
+    setBoardHistory: () => false,
+  },
+  viewPreviousBoardInHistory: () => false,
+  viewNextBoardInHistory: () => false,
+  isViewingHistory: () => false,
   makeMove: () => false,
 });
 
@@ -75,11 +93,17 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
   const [moves, setMoves] = useState<Move[]>(
     getLegalMovesFromBoard(board, colorToMove)
   );
+  const [boardHistory, setBoardHistory] = useState<string[]>([
+    getFenFromBoard(board),
+  ]);
+  const [viewingBoardIndex, setViewingBoardIndex] = useState<number>(0);
 
+  /** Updaing Legal Moves */
   useEffect(() => {
     setMoves(getLegalMovesFromBoard(board, colorToMove));
   }, [board, colorToMove]);
 
+  /** Determining end of game and ai caller */
   useEffect(() => {
     if (gameMode === GameModes.LocalMultiPlayer) return;
 
@@ -92,7 +116,7 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
       makeMove(aiMove.targetPosIndex, aiMove.startPosIndex);
     }
 
-    if (moves.length > 0) return;
+    if (moves.length > 0 && !isViewingHistory()) return;
 
     const gameRes = getGameResult(board, colorToMove);
 
@@ -102,6 +126,41 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     }
 
     console.log(`winner: ${gameRes}`);
+  }, [moves]);
+
+  /** Updating Board History when board changes */
+  useEffect(() => {
+    if (isViewingHistory()) return;
+
+    setBoardHistory((prevBoardHistory) => {
+      const updatedBoardHistory = [...prevBoardHistory];
+      const currentBoardFen = getFenFromBoard(board);
+
+      if (
+        updatedBoardHistory[updatedBoardHistory.length - 1] !== currentBoardFen
+      ) {
+        updatedBoardHistory.push(currentBoardFen);
+        setViewingBoardIndex(updatedBoardHistory.length - 1);
+      }
+
+      return updatedBoardHistory;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [board]);
+
+  /** Updating board when viewing history */
+  useEffect(() => {
+    if (!isViewingHistory()) return;
+
+    setBoard(
+      getBoardFromFEN(boardHistory[viewingBoardIndex] as unknown as string)
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [viewingBoardIndex]);
+
+  /** Remove all legal moves if viewing history so players can't move */
+  useEffect(() => {
+    if (isViewingHistory() && moves.length > 0) setMoves([]);
   }, [moves]);
 
   const makeMove = (index: number, startPosIndex?: number) => {
@@ -129,6 +188,23 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     );
   };
 
+  /** History state methods */
+  const viewPreviousBoardInHistory = () => {
+    if (boardHistory.length <= 1 || viewingBoardIndex < 1) return;
+
+    setViewingBoardIndex((prevViewingBoardIndex) => prevViewingBoardIndex - 1);
+  };
+
+  const viewNextBoardInHistory = () => {
+    if (viewingBoardIndex >= boardHistory.length - 1) return;
+
+    setViewingBoardIndex((prevViewingBoardIndex) => prevViewingBoardIndex + 1);
+  };
+
+  const isViewingHistory = () => {
+    return viewingBoardIndex < boardHistory.length - 1;
+  };
+
   const value = {
     BoardState: {
       board,
@@ -146,6 +222,13 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
       colorToMove,
       setColorToMove,
     },
+    HistoryState: {
+      boardHistory,
+      setBoardHistory,
+    },
+    viewPreviousBoardInHistory,
+    viewNextBoardInHistory,
+    isViewingHistory,
     makeMove,
   };
 
