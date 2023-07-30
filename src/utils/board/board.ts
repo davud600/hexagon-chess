@@ -8,17 +8,20 @@ import {
   type BoardType,
   type HexagonSide,
   type HexagonSlidingSide,
-  PieceColor,
-  GameResultType,
+  type PieceColor,
+  type GameResultType,
 } from "~/types/board";
 import { getMovesFromBoard } from "./moves";
 import { getPieceColor, getPieceType } from "./piece";
 
 export function getGameResult(
   board: BoardType,
-  colorToMove: PieceColor
+  colorToMove: PieceColor,
+  moves: Move[]
 ): GameResultType {
-  let result: GameResultType = 0; // draw
+  let result: GameResultType = 0; // stalemate
+
+  if (moves.length === 0) return 0;
 
   if (isInCheck(board, colorToMove)) {
     result = colorToMove;

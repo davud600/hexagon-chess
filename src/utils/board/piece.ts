@@ -1,3 +1,4 @@
+import { Pieces } from "~/BoardObjects";
 import { type PieceColor, type PieceIndex } from "~/types/board";
 
 export function getPieceColor(pieceValue: number): PieceColor {
@@ -18,4 +19,8 @@ export function getPieceType(pieceValue: number): PieceIndex {
   if (pieceIndex > 6 || pieceIndex < 0) return 0;
 
   return pieceIndex as unknown as PieceIndex;
+}
+
+export function getOppositeColor(color: PieceColor): PieceColor {
+  return color === Pieces.black ? Pieces.white : Pieces.black;
 }
