@@ -12,15 +12,15 @@ import {
   type GameResultType,
 } from "~/types/board";
 import { getMovesFromBoard } from "./moves";
-import { getPieceColor, getPieceScoreValue, getPieceType } from "./piece";
+import { getOppositeColor, getPieceColor, getPieceScoreValue, getPieceType } from "./piece";
 
 export function getScore(color: PieceColor, board: BoardType): number {
   let score = 0;
-  board.forEach(boardModule => {
-    if (getPieceColor(boardModule) === color) {
-      score += getPieceScoreValue(boardModule);
+  for (let i = 0; i < board.length; i++) {
+    if (getPieceColor(board[i] as unknown as number) === color) {
+      score += getPieceScoreValue(board[i] as unknown as number);
     }
-  })
+  }
 
   return score
 }
@@ -35,7 +35,7 @@ export function getGameResult(
   if (moves.length !== 0) return 1;
 
   if (isInCheck(board, colorToMove)) {
-    result = colorToMove;
+    result = getOppositeColor(colorToMove);
   }
 
   return result;
@@ -55,9 +55,8 @@ export function isInCheck(board: BoardType, colorToMove: PieceColor): boolean {
     }
   }
 
-  // get moves of that new board
   // check if any of the move.targetPosition is the same as the posIndex for the king
-  getMovesFromBoard(board, colorToMove === 8 ? 16 : 8).forEach(
+  getMovesFromBoard(board, getOppositeColor(colorToMove)).forEach(
     (updatedBoardMove) => {
       if (updatedBoardMove.targetPosIndex === kingPosIndex) isInCheck = true;
     }
