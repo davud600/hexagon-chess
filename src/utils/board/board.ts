@@ -12,7 +12,18 @@ import {
   type GameResultType,
 } from "~/types/board";
 import { getMovesFromBoard } from "./moves";
-import { getPieceColor, getPieceType } from "./piece";
+import { getPieceColor, getPieceScoreValue, getPieceType } from "./piece";
+
+export function getScore(color: PieceColor, board: BoardType): number {
+  let score = 0;
+  board.forEach(boardModule => {
+    if (getPieceColor(boardModule) === color) {
+      score += getPieceScoreValue(boardModule);
+    }
+  })
+
+  return score
+}
 
 export function getGameResult(
   board: BoardType,
@@ -21,7 +32,7 @@ export function getGameResult(
 ): GameResultType {
   let result: GameResultType = 0; // stalemate
 
-  if (moves.length === 0) return 0;
+  if (moves.length !== 0) return 1;
 
   if (isInCheck(board, colorToMove)) {
     result = colorToMove;

@@ -24,3 +24,22 @@ export function getPieceType(pieceValue: number): PieceIndex {
 export function getOppositeColor(color: PieceColor): PieceColor {
   return color === Pieces.black ? Pieces.white : Pieces.black;
 }
+
+export function getPieceScoreValue(pieceValue: number): number {
+  switch(getPieceType(pieceValue)) {
+    case Pieces.pawn:
+      return 1;
+    case Pieces.bishop:
+      return 3;
+    case Pieces.knight:
+      return 3;
+    case Pieces.rook:
+      return 4;
+    case Pieces.queen:
+      return 8;
+    case Pieces.king:
+      return 8;
+    default:
+      return 0;
+  }
+}
