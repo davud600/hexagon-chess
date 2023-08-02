@@ -44,6 +44,4 @@ export let Board: BoardType = [];
 Board = getBoardFromFEN(
   "bknrp1/qb2p2/n1b1p3/r3p4/ppppp5/11/5PPPPP/4P3R/3P1B1N/2P2BK/1PRNQB"
 );
-// Board = getBoardFromFEN(
-//   "bknrp1/7/8/9/10/11/10/9/3P1B1N/2P2BK/1PRNQB"
-// );
+// Board = getBoardFromFEN("brnkp1/q6/8/9/10/11/10/9/8/6Q/1PKNRB");

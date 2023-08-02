@@ -12,17 +12,23 @@ import {
   type GameResultType,
 } from "~/types/board";
 import { getMovesFromBoard } from "./moves";
-import { getOppositeColor, getPieceColor, getPieceScoreValue, getPieceType } from "./piece";
+import {
+  getOppositeColor,
+  getPieceColor,
+  getPieceScoreValue,
+  getPieceType,
+} from "./piece";
 
 export function getScore(color: PieceColor, board: BoardType): number {
   let score = 0;
   for (let i = 0; i < board.length; i++) {
+    if (board[i] === undefined || board[i] === 0) continue;
     if (getPieceColor(board[i] as unknown as number) === color) {
       score += getPieceScoreValue(board[i] as unknown as number);
     }
   }
 
-  return score
+  return score;
 }
 
 export function getGameResult(
@@ -41,26 +47,34 @@ export function getGameResult(
   return result;
 }
 
-export function isInCheck(board: BoardType, colorToMove: PieceColor): boolean {
+export function isInCheck(
+  board: BoardType,
+  colorToMove: PieceColor,
+  kingPosIndex?: number
+): boolean {
   let isInCheck = false;
 
   // find king
-  let kingPosIndex = 0;
-  for (let i = 0; i < 91; i++) {
-    if (
-      getPieceType(board[i] as unknown as number) === Pieces.king &&
-      getPieceColor(board[i] as unknown as number) === colorToMove
-    ) {
-      kingPosIndex = i;
+  if (kingPosIndex === undefined) {
+    kingPosIndex = 0;
+    for (let i = 0; i < 91; i++) {
+      if (
+        getPieceType(board[i] as unknown as number) === Pieces.king &&
+        getPieceColor(board[i] as unknown as number) === colorToMove
+      ) {
+        kingPosIndex = i;
+      }
     }
   }
 
   // check if any of the move.targetPosition is the same as the posIndex for the king
-  getMovesFromBoard(board, getOppositeColor(colorToMove)).forEach(
-    (updatedBoardMove) => {
-      if (updatedBoardMove.targetPosIndex === kingPosIndex) isInCheck = true;
+  const moves = getMovesFromBoard(board, getOppositeColor(colorToMove));
+  for (let i = 0; i < moves.length; i++) {
+    if (moves[i]?.targetPosIndex === kingPosIndex) {
+      isInCheck = true;
+      break;
     }
-  );
+  }
 
   return isInCheck;
 }

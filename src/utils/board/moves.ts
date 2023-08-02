@@ -18,23 +18,24 @@ export function getLegalMovesFromBoard(
   colorToMove: PieceColor
 ): Move[] {
   const moves: Move[] = [];
+  const pseudoMoves = getMovesFromBoard(Board, colorToMove);
 
-  getMovesFromBoard(Board, colorToMove).forEach((pseudoLegalMove) => {
+  for (let i = 0; i < pseudoMoves.length; i++) {
     let moveIsLegal = true;
 
     // make move and get new board
     const updatedBoard = [...Board];
-    updatedBoard[pseudoLegalMove.startPosIndex] = 0;
-    updatedBoard[pseudoLegalMove.targetPosIndex] = Board[
-      pseudoLegalMove.startPosIndex
+    updatedBoard[pseudoMoves[i]!.startPosIndex] = 0;
+    updatedBoard[pseudoMoves[i]!.targetPosIndex] = Board[
+      pseudoMoves[i]!.startPosIndex
     ] as unknown as number;
 
     moveIsLegal = !isInCheck(updatedBoard, colorToMove);
 
     if (moveIsLegal) {
-      moves.push({ ...pseudoLegalMove });
+      moves.push({ ...pseudoMoves[i]! });
     }
-  });
+  }
 
   return moves;
 }
