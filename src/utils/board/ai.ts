@@ -37,7 +37,7 @@ function minmax(
   for (let i = 0; i < moves.length; i++) {
     const updatedBoard = generateMove(moves[i] as unknown as Move, board);
     const moveScore = minmax(updatedBoard, oppositeColor, depth + 1, aiColor);
-    console.log({ moveScore, depth, isMaximizing });
+    // console.log({ moveScore, depth, isMaximizing });
 
     bestScore = isMaximizing
       ? Math.max(moveScore, bestScore)
@@ -78,7 +78,7 @@ export function aiGetMove(
     }
   }
 
-  console.log({ bestMove, bestScore });
+  // console.log({ bestMove, bestScore });
 
   return bestMove;
 }

@@ -177,16 +177,6 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
 
-  /** Updating board when viewing history */
-  useEffect(() => {
-    if (!isViewingHistory()) return;
-
-    setBoard(
-      getBoardFromFEN(boardHistory[viewingBoardIndex] as unknown as string)
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [viewingBoardIndex]);
-
   /** Remove all legal moves if viewing history so players can't move */
   useEffect(() => {
     if (isViewingHistory() && moves.length > 0) setMoves([]);
@@ -220,13 +210,29 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
   const viewPreviousBoardInHistory = () => {
     if (boardHistory.length <= 1 || viewingBoardIndex < 1) return;
 
-    setViewingBoardIndex((prevViewingBoardIndex) => prevViewingBoardIndex - 1);
+    setViewingBoardIndex((prevViewingBoardIndex) => {
+      setBoard(
+        getBoardFromFEN(
+          boardHistory[prevViewingBoardIndex - 1] as unknown as string
+        )
+      );
+
+      return prevViewingBoardIndex - 1;
+    });
   };
 
   const viewNextBoardInHistory = () => {
     if (viewingBoardIndex >= boardHistory.length - 1) return;
 
-    setViewingBoardIndex((prevViewingBoardIndex) => prevViewingBoardIndex + 1);
+    setViewingBoardIndex((prevViewingBoardIndex) => {
+      setBoard(
+        getBoardFromFEN(
+          boardHistory[prevViewingBoardIndex + 1] as unknown as string
+        )
+      );
+
+      return prevViewingBoardIndex + 1;
+    });
   };
 
   const isViewingHistory = () => {
