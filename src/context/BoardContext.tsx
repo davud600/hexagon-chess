@@ -112,17 +112,24 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
   const [whiteScore, setWhiteScore] = useState<number>(0);
   const [blackScore, setBlackScore] = useState<number>(0);
 
+  /**
+   * Updating score for each color
+   */
   useEffect(() => {
     setWhiteScore(getScore(Pieces.white, board));
     setBlackScore(getScore(Pieces.black, board));
   }, [board]);
 
-  /** Updaing Legal Moves */
+  /**
+   * Updaing Legal Moves
+   */
   useEffect(() => {
     setMoves(getLegalMovesFromBoard(board, colorToMove));
   }, [board, colorToMove]);
 
-  /** Ai Turn Caller */
+  /**
+   * Ai Turn Caller
+   */
   useEffect(() => {
     // Local vs ai...
     if (gameMode === GameModes.LocalVsAi) {
@@ -137,7 +144,9 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moves]);
 
-  /** Updating Game Result State */
+  /**
+   * Updating Game Result State
+   */
   useEffect(() => {
     if (isViewingHistory()) return;
 
@@ -145,7 +154,9 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [moves, board, colorToMove]);
 
-  /** Game ended */
+  /**
+   * Game status
+   */
   useEffect(() => {
     if (gameResult === 1) return; // game hasn't ended
 
@@ -157,7 +168,9 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     console.log(`winner: ${gameResult}`);
   }, [gameResult]);
 
-  /** Updating Board History when board changes */
+  /**
+   * Updating Board History when board changes
+   */
   useEffect(() => {
     if (isViewingHistory()) return;
 
@@ -177,7 +190,9 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
 
-  /** Remove all legal moves if viewing history so players can't move */
+  /**
+   * Remove all legal moves if viewing history so players can't move
+   */
   useEffect(() => {
     if (isViewingHistory() && moves.length > 0) setMoves([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -206,7 +221,9 @@ export default function BoardProvider({ children }: { children: ReactNode }) {
     setColorToMove((prevColorToMove) => getOppositeColor(prevColorToMove));
   };
 
-  /** History state methods */
+  /**
+   * History state methods
+   */
   const viewPreviousBoardInHistory = () => {
     if (boardHistory.length <= 1 || viewingBoardIndex < 1) return;
 

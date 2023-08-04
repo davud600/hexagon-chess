@@ -215,13 +215,13 @@ export function getSlidingNeighbor(
 export function movesIncludeMove(moves: Move[], move: Move): boolean {
   let movesIncludeMove = false;
 
-  moves.forEach((item) => {
+  for (let i = 0; i < moves.length; i++) {
     if (
-      item.startPosIndex === move.startPosIndex &&
-      item.targetPosIndex === move.targetPosIndex
+      moves[i]?.startPosIndex === move.startPosIndex &&
+      moves[i]?.targetPosIndex === move.targetPosIndex
     )
       movesIncludeMove = true;
-  });
+  }
 
   return movesIncludeMove;
 }
