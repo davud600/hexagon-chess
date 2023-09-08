@@ -1,14 +1,16 @@
 import Head from "next/head";
-import HomePage from "./home";
-export default function Main() {
+import Board from "~/components/board/Board";
+
+const Game = () => {
   return (
-    <div>
+    <>
       <Head>
         <title>Hexagonal Chess</title>
         <meta name="description" content="Chess but hexagons" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <HomePage />
-    </div>
+    </>
   );
-}
+};
+
+export default Game;
