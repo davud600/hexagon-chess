@@ -35,7 +35,9 @@ export default function GameSettingsProvider({
 }: {
   children: ReactNode;
 }) {
-  const [gameMode, setGameMode] = useState<GameMode>(GameModes.LocalVsAi);
+  const [gameMode, setGameMode] = useState<GameMode>(
+    GameModes.LocalMultiPlayer
+  );
   const [aiColor, setAiColor] = useState<PieceColor | null>(null);
 
   useEffect(() => {
