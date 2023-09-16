@@ -1,4 +1,5 @@
 import Head from "next/head";
+import Board from "~/components/board/Board";
 
 const Game = () => {
   return (
@@ -8,7 +9,6 @@ const Game = () => {
         <meta name="description" content="Chess but hexagons" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <span>Here will be the board!</span>
     </>
   );
 };

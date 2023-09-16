@@ -1,3 +1,5 @@
 # Hexagonal Chess
 
-## To do...
+## This idea was made overnight, and suprisingly enough, it's a great one, regardless of what one might say!
+
+## Well this is gonna work!
