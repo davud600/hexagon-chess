@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Hammersmith+One&display=swap');
+.wrapper
+{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5rem;
+    .title
+    {
+        font-size: 3em;
+    }
+    .description
+    {
+        font-size: 2em;
+        width:32rem;
+    }
+    section
+    {
+        display:flex;
+        align-items: center;
+        gap: 10rem;
+    }
+}
+.tab
+{
+    // text-transform: ;
+    font-family: 'Hammersmith One', sans-serif;
+    font-size: 1.2em;
+}

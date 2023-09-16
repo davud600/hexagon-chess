@@ -25,9 +25,10 @@
     height:80px;
     width:180px;
     color:white;
-    font-weight: bolder;
     font-size:1.4em;
     border-color:white;
+    font-family: 'Hammersmith One', sans-serif;
+    text-transform: lowercase;
 }
 .button:hover {
     background-color: black;
@@ -36,6 +37,19 @@
 }
 .dialog
 {
-    width:20rem;
-    height:20rem;
+    display:flex;
+    width:15rem;
+    height:10rem;
+    align-items: center;
+    justify-content: center;
+    gap:3rem;
+    .dialogOption
+    {
+        font-size: 1.4em;
+        color:black;
+        span {
+            display:flex;
+            justify-content: center;
+        }
+    }
 }

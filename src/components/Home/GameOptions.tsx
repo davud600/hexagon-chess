@@ -7,6 +7,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import style from "./Home.module.scss";
 import Link from "next/link";
+import Image from "next/image";
 
 const GameOptions = () => {
   const [open, setOpen] = useState(false);
@@ -44,12 +45,28 @@ const GameOptions = () => {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">{"Gameplay"}</DialogTitle>
-        <DialogActions>
-          <Link href="/game" autoFocus onClick={handleLocal}>
-            Local
+        <DialogActions className={style.dialog}>
+          <Link
+            href="/game"
+            autoFocus
+            onClick={handleLocal}
+            className={style.dialogOption}
+          >
+            <div className={style.col}>
+              <Image src={"/PvP.png"} height={70} width={70} alt="noPvP" />
+              <span>Local</span>
+            </div>
           </Link>
-          <Link href="/game" onClick={handleOnline} autoFocus>
-            Online
+          <Link
+            href="/game"
+            onClick={handleOnline}
+            autoFocus
+            className={style.dialogOption}
+          >
+            <div className={style.col}>
+              <Image src={"/PvAI.png"} height={70} width={70} alt="noPvAI" />
+              <span>AI</span>
+            </div>
           </Link>
         </DialogActions>
       </Dialog>

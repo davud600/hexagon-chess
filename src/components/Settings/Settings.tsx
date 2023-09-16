@@ -6,6 +6,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import style from "./Settings.module.scss";
 
 const Settings = () => {
   const [open, setOpen] = React.useState(false);
@@ -20,11 +21,15 @@ const Settings = () => {
 
   return (
     <div>
-      <Button variant="outlined" onClick={handleClickOpen}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        className={style.button}
+      >
         settings
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>settings</DialogTitle>
+        <DialogTitle className={style.title}>settings</DialogTitle>
         <DialogContent>
           <DialogContentText>Email:</DialogContentText>
           <TextField
